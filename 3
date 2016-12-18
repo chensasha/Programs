@@ -2,9 +2,9 @@
 
 using namespace std; 
 
-void QS(int *a, int l, int r) 
+void QS (float *a, int l, int r) 
 { 
-    int x = a[(l+r)/2]; 
+    float x = a[(l+r)/2]; 
     int i=l; 
     int j=r; 
     while (i<=j) 
@@ -19,7 +19,7 @@ void QS(int *a, int l, int r)
         }
         if (i<=j) 
         { 
-            int temp=a[i];
+            float temp=a[i];
             a[i]=a[j];
             a[j]=temp; 
             i++; 
@@ -40,7 +40,7 @@ int main()
 { 
     int n; 
     cin>>n; 
-    int *a = new int[n]; 
+    float *a = new float[n]; 
     for (int i=0; i<n; i++) 
     {
         cin>>a[i];

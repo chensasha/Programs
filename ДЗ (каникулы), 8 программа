@@ -1,0 +1,41 @@
+#include <iostream>
+
+using namespace std;
+
+int GCD(int a, int b)
+{
+	int c;
+	if (a % b == 0)
+	{
+		return (b);
+	} 
+	else
+	{
+		c = a % b;
+		a = b;
+		b = c;
+		return(GCD(a, b));
+	}
+}
+
+void proper_fraction (int n)
+{
+	int k=0;
+	for (int i = 1; i < n; i++)
+    {
+		if (GCD(i, n) != 1)
+		{
+			k++;
+		}
+    }
+    cout<<k;
+    
+}
+
+int main()
+{
+	int n;
+	cin>>n;
+	proper_fraction (n);
+	return 0;
+}

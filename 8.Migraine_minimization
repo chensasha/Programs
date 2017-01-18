@@ -1,0 +1,26 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+int Migraine_minimization(int n)
+{
+    int CountOfTheSquares=0; //минимальное количество участков
+    int SideOfTheSquare; //сторона одного участка
+    while (n!=0) //пока состояние жителя не закончится, делим землю на минимальное количество участков (квадратов)
+    {
+        SideOfTheSquare=sqrt(n); //сторона наибольшего участка, котрый можно приобрести на оставшееся состояние
+        n=n-SideOfTheSquare*SideOfTheSquare; //оставшееся состояние
+        CountOfTheSquares++; //количество приобретенных участков
+    }
+    CountOfTheSquares*=4; //умножаем количество приобретенных участков на 4 часа
+    return CountOfTheSquares; 
+}
+
+int main ()
+{
+    int n; //состояние жителя 
+    cin>>n;
+    cout<<Migraine_minimization(n); //вывод минимального количества часов
+    return 0;
+}

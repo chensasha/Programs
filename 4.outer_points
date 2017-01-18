@@ -1,0 +1,50 @@
+#include <iostream>
+
+using namespace std;
+
+void outer_points(unsigned short int n, unsigned short int m)
+{
+    int **ArrSegment = new int* [n]; //создание двумерного динамичсекого массива, элементы которого - координаты начал и концов отрезков
+    for (unsigned short int i=0; i<n; i++)
+    {
+        ArrSegment[i]=new int [2];
+    }
+    int *ArrPoint = new int [m]; //создание динамического массива, элементы которого - координаты точек
+    int count=0; //количсетво отрезков, которым не принадлежит точка
+    for (unsigned short int i=0; i<n; i++) //ввод координат начал и концов отрезков с клавиатуры, заполнение массива
+    {
+        cin>>ArrSegment[i][0];
+        cin>>ArrSegment[i][1];
+    }
+    for (unsigned short int i=0; i<m; i++) //ввод координат точек с клавиатуры, заполнение массива
+    {
+    cin>>ArrPoint[i];    
+    }
+    for (unsigned short int i=0; i<m; i++) //пробегаем по массиву с координатами точек
+    { 
+        for (unsigned short int j=0; j<n; j++) //пробегаем по массиву координат отрезков, сравнивая координату каждой точки с координатами концов отрезков
+        {    
+            if (ArrPoint[i]>=ArrSegment[j][0] && ArrPoint[i]<=ArrSegment[j][1]) //если координата точки находится между координатами начала и конца отрезка, то она ей принадлжит
+                {
+                    count++; //прибавляем единицу
+                }
+        }
+        cout<<n-count<<" "; //можем посчитать количество отрезков, которым не принадлжит точка (т. к. знаем количество отрезков, которым она принадлжеит), выводим на экран
+        count=0; //обнуляем, чтобы также посчитать количество для другой точки
+    }
+    for (unsigned short int i=0; i<n; i++) //удаление динамических массивов
+    {
+        delete[] ArrSegment[i];
+    }
+    delete[] ArrSegment;
+    delete[] ArrPoint;
+}
+    
+int main ()
+{
+    unsigned short int n, m; 
+    cin>>n; //ввод с клавиатуры количества отрезков
+    cin>>m; //ввод с клавиатуры количества точек
+    outer_points(n, m);
+    return 0;
+}

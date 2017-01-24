@@ -2,71 +2,83 @@
 
 using namespace std;
 
-void Continuous_knapsack(int W, int n, float **arr) 
+void QS (float *arr1, int *arr2, int left, int right) //сортировка по возрастанию
+{ 
+    int mid=arr1[(left+right)/2]; 
+    int i=left; 
+    int j=right; 
+    int temp;
+    while (i<=j) 
+    { 
+        while (arr1[i]>mid)
+        {
+            i++;
+        }
+        while (arr1[j]<mid) 
+        {
+            j--;
+        }
+        if (i<=j) 
+        { 
+            temp=arr1[i];
+            arr1[i]=arr1[j];
+            arr1[j]=temp;
+            temp=arr2[i];
+            arr2[i]=arr2[j];
+            arr2[j]=temp;
+            i++; 
+            j--; 
+        } 
+    } 
+    if (i<right) 
+    {
+        QS(arr1, arr2, i, right); 
+    }
+    if (left<j) 
+    {
+        QS(arr1, arr2, left, j); 
+    }
+}
+
+void Continuous_knapsack(int W, int n) 
 {
+    int ArrWeight[n]; //создаем массив объёмов 
+    int ArrCost[n]; //создаем массив стоимостей
+    int index[n]; //создаем массив, который содержит порядковые номера
+    float ArrCostPerUnit[n]; //создаем массив удельных стоимостей
+    float ArrPart[n]; //содаем массив, содержащий части взятых вещей
+    for (int i=0; i<n; i++) //заполянем массивы 
+    { 
+        cin>>ArrWeight[i]; //вводим с клавиатуры объемы вещей
+        cin>>ArrCost[i]; //вводим с клавиатуры стоимости вещей 
+        ArrCostPerUnit[i]=ArrCost[i]/ArrWeight[i]; //находим их удельные стоимости
+        index[i]=i;  //порядковые номера
+        ArrPart[i]=0.0; //части взятых вещей, заполняем 0
+    }
     float cost=0; //стоимость всех вещей, которые поместили в рюкзак
-    float VolOfLoad=0; //объём поещенных в рюкзак вещей
-    int MaxNum=0; //порядковый номер вещи с наибольшей удельной стоимостью 
-    float max1=arr[0][2]; 
-    for(int i=0; i<n; i++) //нахождение вещи с наибольшей удельной стоимостью и её порядкового номера
+    int WeightOfLoad=0; //объём поещенных в рюкзак вещей
+    QS (ArrCostPerUnit, index, 0, n-1); //сортируем по возрастания массивы удельных стоимостей и порядковых номеров (чтобы сохранить порядок вещей)
+    for (int i=0; i<n; i++)
     {
-        if (arr[i][2]>max1) 
+        if (WeightOfLoad<W) //если в рюкзкаке еще есть место, то заполняем его вещами с максимальными удельными стоимостями
         {
-                max1=arr[i][2];
-                MaxNum=i;
+            WeightOfLoad+=ArrWeight[index[i]];
+            cost+=ArrCost[index[i]];
+            ArrPart[index[i]]=1.0;
+        }
+        if (WeightOfLoad>W) //если какая-то вещь не поместилась в рюкзаком полностью, то берем только ее часть
+        {
+            int j=index[i]; //номер вещи, не поместившейся полностью
+            ArrPart[j]=(W-WeightOfLoad+ArrWeight[j])/ArrWeight[j]; //делим объём поместившийся части на весь объём вещи
+            cost=cost-ArrCost[j]+ArrCost[j]*ArrPart[j]; //прибавляем стоимость этой части 
+            WeightOfLoad=W;
         }
     }
-    if (arr[MaxNum][0]<W) //если вещь с наибольшей стоимостью помещается в рюкзак, то берем ее всю
+    for (int i=0; i<n; i++) //выводим части взятых вещей
     {
-        VolOfLoad+=arr[MaxNum][0]; 
+        cout<<ArrPart[i]<<" ";
     }
-    if (arr[MaxNum][0]>W) //если вещь с наибольшей стоимостью не помещается в рюкзак, то берем только ее часть
-    {
-        VolOfLoad=W;
-        arr[MaxNum][3]=W/arr[MaxNum][0];
-    }
-    int num=0; //порядковый номер наибольших элементов массива удельной стоимости вещей
-    float max2=0.0;
-    while (VolOfLoad<W) { //пока в рюкзаке есть место, кладем в него вещи с наибольшими удельными соимостями, пока что не деля их
-        for(int i=0; i<n; i++)
-        {
-            if (arr[i][2]>max2 && arr[i][2]<max1)
-            {
-                max2=arr[i][2];
-                num=i;
-            }
-        }
-        max1=max2;
-        max2=0.0;
-        VolOfLoad+=arr[num][0]; 
-        arr[num][3]=1.0; 
-    }
-    arr[MaxNum][3]=1.0;
-    for (int i=0; i<n; i++) //находим суммы положенных целых вещей
-    {
-        if (arr[i][3]>0)
-        {
-            cost+=arr[i][1];
-        }
-    }
-    if (VolOfLoad==W) //если удалось запонить рюкзак, не деля вещи, то просто выводим их общую стоимость и части взятых вещей
-    {
-        for (int i=0; i<n; i++)
-        {
-            cout<<arr[i][3]<<" ";
-        }
-        cout<<endl<<cost;
-    }
-    if (VolOfLoad>W) //если какая-то вещь не влезла полностью, то делим ее
-    {
-        arr[num][3]=(W-VolOfLoad+arr[num][0])/arr[num][0]; //делим объем поместившейся части на весь объем вещи
-        cost=cost-arr[num][1]+arr[num][3]*arr[num][1]; //считаем стоимость этой части
-        for (int i=0; i<n; i++) //выводим части взятых вещей и их общую стоимость
-        {
-            cout<<arr[i][3]<<" ";
-        }
-        cout<<endl<<cost;
-    }
+    cout<<endl<<cost; //выводим общую стоимость вещей
 }
 
 int main ()
@@ -74,22 +86,6 @@ int main ()
     int W, n;
     cin>>W; //объем рюкзака
     cin>>n; //количество вещей
-    float **arr = new float*[n]; //создаем двумерный массив 
-    for (int i = 0; i<n; i++) 
-    {
-        arr[i] = new float[4]; 
-    }
-    for (int i = 0; i<n; i++) //заполянем двумерный массив 
-    { 
-        cin>>arr[i][0]; //вводим с клавиатуры объемы вещей
-        cin>>arr[i][1]; //вводим с клавиатуры стоимости вещей 
-        arr[i][2] = arr[i][1] / arr[i][0]; //находим их удельные стоимости
-        arr[i][3] = 0.0;  //части взятых вещей, заполняем 0
-    }
-    Continuous_knapsack(W, n, arr);
-    for (int i = 0; i<n; i++) 
-    {
-        delete[] arr[i];
-    }
+    Continuous_knapsack(W, n);
     return 0;
 }

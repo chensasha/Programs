@@ -1,0 +1,68 @@
+#include <iostream>
+
+using namespace std;
+
+typedef class
+{
+    int first, second;
+    public:
+    Pair_int (int a, int b): first(a), second (b) { }
+    void swap (Pair_int &a, Pair_int &b)
+    {
+        swap(a.first, b.first);
+        swap(a.second, b.second);
+    }
+    bool operator == (Pair_int &a, Pair_int &b)
+    {
+        if ((a.first == b.first)&&(a.second != b.second));
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }   
+    }
+    bool operator != (Pair_int &a, Pair_int &b)
+    {
+        if ((a.first != b.first)||(a.second != b.second))
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    void get_first (Pair_int &a, Pair_int &b)
+    {
+        cout<<a.first<<" "<<b.first<<<end;
+    }
+    void get_second (Pair_int &a, Pair_int &b)
+    {
+        cout<<a.second<<" "<<b.second<<<end;
+    }
+}Pair_int;
+
+
+int main()
+{
+    Pair_int a(2,21), b(14,21);
+    if (a!=b)
+    {
+        cout<<"true"<<endl;
+    }
+    else
+    {
+        cout<<"false"<<endl;
+    }
+    if (a==b)
+    {
+        cout<<"true"<<endl;
+    }
+    else
+    {
+        cout<<"false"<<endl;
+    }
+    return 0;
+}

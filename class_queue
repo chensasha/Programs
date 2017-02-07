@@ -1,4 +1,3 @@
-// Example program
 #include <iostream>
 #include <string>
 #include <map>
@@ -25,25 +24,29 @@ class queue{
         }
     }
     void push (int a){
-        node* temp=new node;
-        temp->data=a;
-        temp->next=head;
-        head=temp;
+        if (head!=NULL){
+            node* temp=new node;
+            temp->data=a;
+            temp->next=head;
+            head=temp;
+        }
     }
     int pop(){
-        if (head->next==NULL){
-            int a=head->data;
-            delete head;
+        if (head!=NULL){
+            if (head->next==NULL){
+                int a=head->data;
+                delete head;
+                return a;
+            }
+            node* temp=head;
+            while (temp->next->next!=NULL){
+                temp=temp->next;
+            }
+            int a=temp->next->data;
+            delete temp->next;
+            temp->next=NULL;
             return a;
         }
-        node* temp=head;
-        while (temp->next->next!=NULL){
-            temp=temp->next;
-        }
-        int a=temp->next->data;
-        delete temp->next;
-        temp->next=NULL;
-        return a;
     }
 };
 
@@ -92,3 +95,4 @@ int main()
 
 	return 0; 
 }
+

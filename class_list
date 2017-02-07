@@ -23,32 +23,41 @@ class list{
         }
     }
     void push_head (int a){
-        node* temp=new node;
-        temp->data=a;
-        temp->next=head;
-        head=temp;
+        if (head!=NULL){
+            node* temp=new node;
+            temp->data=a;
+            temp->next=head;
+            head=temp;
+        }
     }
     void push_back (int a){
-        node* temp=new node;
-        while (temp->next!=NULL){
-            temp=temp->next;
+        if (head!=NULL){
+            node* temp=new node;
+            while (temp->next!=NULL){
+                temp=temp->next;
+            }
+            temp->data=a;
+            temp->next->next=NULL;
         }
-        temp->data=a;
-        temp->next->next=NULL;
     }
     int get(int i){
-        int a;
-        node* temp=head;
-        for (int j=1; j<=i; j++){
-            temp=temp->next;
+        if (head!=NULL){
+            int a;
+            node* temp=head;
+            for (int j=1; j<=i; j++){
+                temp=temp->next;
+            }
+            a=temp->data;
+            return a;
         }
-        a=temp->data;
-        return a;
     }
     void set (int i, int a){
-        node* temp=head;
-        for (int j=1; j<=i; j++){
-        temp->data=a;
+        if (head!=NULL){
+            node* temp=head;
+            for (int j=1; j<=i; j++){
+                temp=temp->next;
+            }
+            temp->data=a;
         }
     }
 };

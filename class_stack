@@ -24,17 +24,21 @@ class stack{
         }
     }
     void push (int a){
-        node* temp=new node;
-        temp->data=a;
-        temp->next=head;
-        head=temp;
+        if (head!=NULL){
+            node* temp=new node;
+            temp->data=a;
+            temp->next=head;
+            head=temp;
+        }
     }
     int pop(){
-        node* temp=head;
-        head=head->next;
-        int a=temp->data;
-        delete temp;
-        return a;
+        if (head!=NULL){
+            node* temp=head;
+            head=head->next;
+            int a=temp->data;
+            delete temp;
+            return a;
+        }
     }
 };
 

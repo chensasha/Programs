@@ -36,8 +36,21 @@ class list{
             while (temp->next!=NULL){
                 temp=temp->next;
             }
-            temp->data=a;
+            temp->next->data=a;
             temp->next->next=NULL;
+        }
+    }
+    void push_data (int data){
+        if (head!=NULL){
+            node* temp=head;
+            while (temp->data!=data && temp!=NULL){
+                temp=temp->next;
+            }
+            node* tmp=new node;
+            tmp->data=data;
+            temp->next->data=tmp->data;
+            tmp->next=temp->next->next;
+            temp->next=tmp;
         }
     }
     int get(int i){
@@ -60,15 +73,42 @@ class list{
             temp->data=a;
         }
     }
+    int delete_head (){
+        if (head!=NULL){
+            node* temp=head;
+            head=temp->next;
+            int a=temp->data;
+            delete temp;
+            return a;
+        }
+    }
+    int delete_back (){
+        if (head!=NULL){
+            if (head->next==NULL){
+                int a=head->data;
+                delete head;
+                return a;
+            }
+            node* temp=head;
+            while (temp->next->next!=NULL){
+                temp=temp->next;
+            }
+            int a=temp->next->data;
+            delete temp->next;
+            temp->next=NULL;
+            return a;
+        }
+    }
 };
 
 
 int main(){
-    list A(12);
-    A.push_head(6);
-    A.push_back(9);
-    cout<<A.get(2)<<endl;
-    A.set(2, 8);
-    cout<<A.get(2);
+    list L(12);
+    L.push_head(6);
+    L.push_back(9);
+    cout<<L.get(2)<<endl;
+    L.set(2, 8);
+    cout<<L.get(2)<<endl;
+    cout<<L.delete_head();
     return 0; 
 }

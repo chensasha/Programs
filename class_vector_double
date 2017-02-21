@@ -41,11 +41,9 @@ class vector_double {
             }
             size++;
         }
-        const int& operator [] (int i) {
+        const double& operator [] (int i) {
             return arr[i];
         }
-        void swap (vector_double a) {
-        }    
         double pop_back() {
             double* temp = new double [cap];
             size--;

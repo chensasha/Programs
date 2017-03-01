@@ -42,6 +42,12 @@ class vector_double {
             size++;
         }
         const double& operator [] (int i) {
+            if (i>=cap) {
+                return arr[0];
+            }
+            if (i>size) {
+                return 0;
+            }
             return arr[i];
         }
         double pop_back() {

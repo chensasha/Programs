@@ -1,0 +1,180 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+struct node{
+    string data;
+    bool color; //1-back, 0-red
+    node *left;
+    node *right;
+    node *parent;
+};
+class string_set{
+    node *root;
+    int k=0;
+    public:
+    string_set(string data){
+        root=new node;
+        root->data=data;
+        root->color=1;
+        root->right=NULL;
+        root->left=NULL;
+        root->parent=NULL;
+        k=1;
+    }
+    void insert(string data){
+       if(root==NULL){
+           root->data=data;
+           root->color=1;
+           root->right=NULL;
+           root->left=NULL;
+           root->parent=NULL;
+           k=1;
+        }
+        node *temp=new node;
+        temp->data=data;
+        temp->left=NULL;
+        temp->right=NULL;
+        temp->color=0;
+        node *tmp=root;
+        node *p;
+        while(tmp->left!=NULL && tmp->right!=NULL){
+            node* p=tmp;
+            if(tmp->data>data){
+                tmp=tmp->left;
+            }
+            else{
+                tmp=tmp->right;
+            }
+        }
+        temp->data=data;
+        if(p->data>data){
+            p->left=temp;
+        }
+        else{
+            p->right=temp;
+        }
+        temp->parent=p;
+        fix(temp);
+        k++;
+    }
+    void fix(node *n){
+        
+        if(n==root){
+            n->color=1;
+            return;
+        }
+        while(n->parent->color==0){
+            node *q=n->parent->parent;
+            if(q->left==n->parent){
+                if(q->right==NULL){
+                    if(n->parent->right==n){
+                        n=n->parent;
+                        right_turn(n);
+                    }
+                    n->parent->color=1;
+                    q->color=0;
+                    left_turn(q);
+                }
+                else{
+                    if(q->right->color==0){
+                        q->right->color=1;
+                        q->color=0;
+                        n->parent->color=1;
+                        n=q;
+                    }
+                }
+            }
+            else{
+                if(q->left==NULL){
+                    if(n->parent->left==n){
+                        n=n->parent;
+                        left_turn(n);
+                    }
+                    n->parent->color=1;
+                    q->color=0;
+                    right_turn(q);
+                }
+                else{
+                    if(q->left->color==0){
+                        q->left->color=1;
+                        q->color=0;
+                        n->parent->color=1;
+                        n=q;
+                    }
+                }
+            }
+            root->color=1;
+        }
+    }
+    void right_turn (node *n){
+        if(n->right==NULL){
+           return;
+        }   
+        node *p=n->right;
+        n->right=p->left;
+        if(p->left!=NULL){
+            p->left->parent=n;
+        }
+        else{
+            if(n->parent==NULL)
+                root=p;
+            else{
+                p->parent=n->parent;
+                if(n==n->parent->left){
+                    n->parent->left=p;
+                }
+                else{
+                    n->parent->right=p;
+                }
+            }
+            p->left=n;
+            n->parent=p;
+        }
+    }
+    void left_turn (node *n){
+        if(n->left==NULL){
+          return;
+        }
+        node *p=n->left;
+        n->left=p->right;
+        if(p->right!=NULL){
+            p->right->parent=n;
+        }
+        else{
+            if(n->parent==NULL){ 
+                root=p;
+            }
+            else{
+                p->parent=n->parent;
+                if(n==n->parent->left){
+                    n->parent->left=p;
+                }
+                else{
+                   n->parent->right=p;
+                }
+            }
+        p->right=n;
+        n->parent=p;
+        }
+    }
+    int count(){
+        cout<<k<<endl;
+    }
+    void delete(node* n){
+        if(n==NULL){
+            return;
+        }
+        deleteTree (n->left);
+        deleteTree (n->right);
+        delete n;
+    }
+    ~string_set(){
+        deleteTree (root);
+    }
+};
+
+int main(){
+     return 0;
+}

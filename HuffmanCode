@@ -11,7 +11,7 @@ struct node {
     char a;
     node *left;
     node *right;
-    node () { }
+    node () {}
     node (node *l, node *r) {
         left=l;
         right=r;

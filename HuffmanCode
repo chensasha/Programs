@@ -80,6 +80,14 @@ void HuffmanCode (string c) {
         }
         cout<<endl;
     }
+    for (int i=0; i<c.length(); i++) {
+        char a=c[i];
+        vector<bool> t=table[a];
+        for (int j=0; j<t.size(); j++) {
+            cout<<t[j];
+        }
+    }
+    cout<<endl;
     vector<bool> m; //decoder
     for (int i=0; i<c.length(); i++) {
         char a=c[i];
@@ -107,8 +115,8 @@ void HuffmanCode (string c) {
 }
     
 int main() {
-    string c1="informatics:example_of_working";
-    cout<<c1<<endl;
-	  HuffmanCode (c1);
+    string c="informatics:example_of_working";
+    cout<<c<<endl;
+    HuffmanCode(c);
     return 0;
 }

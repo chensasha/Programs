@@ -1,0 +1,114 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <list>
+#include <map>
+
+using namespace std;
+
+struct node {
+    int count;
+    char a;
+    node *left;
+    node *right;
+    node () { }
+    node (node *l, node *r) {
+        left=l;
+        right=r;
+        count=l->count + r->count;
+    }
+};
+struct MyCompare {
+    bool operator () (node *l, node *r) const {
+        return l->count < r->count;
+    }
+};
+vector<bool> code; 
+map<char,vector<bool>> table;
+void build (node *root) { 
+    if(root->right!=NULL) {
+        code.push_back(1);
+        build (root->right);
+    }
+    if(root->left!=NULL) {
+        code.push_back(0);
+        build (root->left);
+    }
+    if(root->a) {
+        table[root->a] = code;
+    }
+    if(code.size()) {
+        code.pop_back();
+    }
+}
+void HuffmanCode (string c) {
+    map<char,int> n;
+    for (int i=0; i<c.length(); i++) {
+        char a=c[i];
+	    n[a]++;
+    }
+    map<char,int>:: iterator i1;
+    for (i1=n.begin(); i1!=n.end(); i1++) {
+        cout<<i1->first<<"-"<<i1->second<<endl;
+    }
+    list<node*> p;
+    map<char,int>::iterator i2;
+    for (i2=n.begin(); i2!=n.end(); ++i2) {
+        node *q= new node;
+        q->a=i2->first;
+        q->count=i2->second;
+        p.push_back(q);
+    }
+    while (p.size() != 1) {
+        p.sort(MyCompare());
+        node *LeftSon=p.front();
+        p.pop_front();
+        node *RightSon=p.front();
+        p.pop_front();
+        node *parent=new node (LeftSon, RightSon);
+        p.push_front(parent);
+    }
+	node *root=p.front();
+	build (root);
+	map<char,vector<bool>>::iterator i3;
+	for (i3=table.begin(); i3!=table.end(); ++i3) {
+	    cout<<i3->first<<" ";
+        vector<bool> t=table[i3->first];
+        for(int i=0; i<t.size(); i++)
+        {
+            cout<<t[i];
+        }
+        cout<<endl;
+    }
+    vector<bool> m; //decoder
+    for (int i=0; i<c.length(); i++) {
+        char a=c[i];
+        vector<bool> t=table[a];
+        for (int j=0; j<t.size(); j++) {
+            m.push_back(t[j]);
+        }
+    }
+    node *decoder=p.front();
+    int s=0;
+    while (s<m.size()) { 
+        while (decoder->left!=NULL && decoder->right!=NULL) {
+            char a=m[s];
+            if (a!=1) {
+                decoder=decoder->left;
+            }
+            else {
+                decoder=decoder->right;
+            }
+            s++;
+        }
+        cout<<decoder->a;
+        decoder=p.front();
+    }
+}
+    
+int main() {
+    string c1="informatics_example_of_working";
+    cout<<c1<<endl;
+	  HuffmanCode (c1);
+    return 0;
+}

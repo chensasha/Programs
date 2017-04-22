@@ -59,7 +59,7 @@ void HuffmanCode (string c) {
         q->count=i2->second;
         p.push_back(q);
     }
-    while (p.size() != 1) {
+    while (p.size()!=1) {
         p.sort(MyCompare());
         node *LeftSon=p.front();
         p.pop_front();

@@ -107,7 +107,7 @@ void HuffmanCode (string c) {
 }
     
 int main() {
-    string c1="informatics_example_of_working";
+    string c1="informatics:example_of_working";
     cout<<c1<<endl;
 	  HuffmanCode (c1);
     return 0;

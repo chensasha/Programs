@@ -62,8 +62,8 @@ void RSA(unsigned long int m) {
         d=1+rand()%1000;
     } while((d*e)%f!=1);
     cout<<"Key to decrypt:"<<d<<","<<n<<endl;
-    unsigned long int z=binpow(c, d)%n;
-    cout<<"Original message:"<<z; 
+    m=binpow(c, d)%n;
+    cout<<"Original message:"<<m; 
 }
 
 int main () {
@@ -72,3 +72,4 @@ int main () {
     RSA(m);
     return 0;
 }
+

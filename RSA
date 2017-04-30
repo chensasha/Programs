@@ -1,0 +1,71 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+bool is_prime (int a) {
+    if (a==0) {
+        return false;
+    }
+    if (a==1) {
+        return false;
+    }
+    for (int i=2; i<sqrt(a); i++) {
+        if (a%i==0) {
+            return false;
+        }
+    }
+    return true;
+}
+int GCD (int a, int b) {
+    if (a==0) {
+        return b;
+    }
+    if (b==0) {
+        return a;
+    }
+    return GCD (b, a%b);
+}
+int binpow (int n, int m) {
+    if (m==0) {
+        return 1;
+    }
+    if (m%2==0) {
+        int a=binpow(n,m/2);
+        return a*a;
+    }
+    else {
+        return binpow (n,m-1)*n;
+    }
+}
+
+
+void RSA(int m) {
+    int p=0; //encryption
+    int q=0;
+    while (is_prime(p)!=1 && is_prime(q)!=1) {
+        p=1000+rand()%2000;
+        q=1000+rand()%2000;
+    }
+    unsigned long int n=p*q;
+    int f=(p-1)*(q-1);
+    int e;
+    do {
+        e=100+rand()%10000;
+    }
+    while (GCD(e,f)!=1 && e<f);
+    int c=binpow(m, e)%n;
+    cout<<p<<";"<<q<<endl;
+    cout<<e<<";"<<n<<endl;
+    cout<<c<<endl; //encrypted message
+    int d=binpow(e, (f-1)); //transcript
+    m=binpow(c, d)%n;
+    cout<<m;
+}
+
+int main () {
+    int m;
+    cin>>m;
+    RSA(m);
+    return 0;
+}

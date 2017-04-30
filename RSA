@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cmath>
+#include <cstdlib>
+#include <math.h>
 
 using namespace std;
 
@@ -17,7 +19,7 @@ bool is_prime (int a) {
     }
     return true;
 }
-int GCD (int a, int b) {
+long int GCD (long int a, long int b) {
     if (a==0) {
         return b;
     }
@@ -26,45 +28,49 @@ int GCD (int a, int b) {
     }
     return GCD (b, a%b);
 }
-int binpow (int n, int m) {
+long int binpow (int n, long int m) {
     if (m==0) {
         return 1;
     }
     if (m%2==0) {
-        int a=binpow(n,m/2);
+        long int a=binpow(n,m/2);
         return a*a;
     }
     else {
         return binpow (n,m-1)*n;
     }
 }
-
-
-void RSA(int m) {
-    int p=0; //encryption
-    int q=0;
+void RSA(long int m) {
+    int p=5; //encryption
+    int q=7;
     while (is_prime(p)!=1 && is_prime(q)!=1) {
-        p=1000+rand()%2000;
-        q=1000+rand()%2000;
+        p=rand()%1000;
+        q=rand()%1000;
     }
-    unsigned long int n=p*q;
-    int f=(p-1)*(q-1);
-    int e;
+    long int n=p*q;
+    long int f=(p-1)*(q-1);
+    long int e;
     do {
-        e=100+rand()%10000;
-    }
-    while (GCD(e,f)!=1 && e<f);
-    int c=binpow(m, e)%n;
+        e=1+rand()%f;
+    } while(GCD(e, f)!=1);
     cout<<p<<";"<<q<<endl;
-    cout<<e<<";"<<n<<endl;
+    cout<<e<<";"<<n<<";"<<f<<endl;
+    long int c;
+    c=pow(m, e);
+    c%=n;
     cout<<c<<endl; //encrypted message
-    int d=binpow(e, (f-1)); //transcript
-    m=binpow(c, d)%n;
-    cout<<m;
+    long int d; //transcript
+    do {
+        d=1+rand()%f;
+    } while((d*e)%f!=1);
+    cout<<d<<";"<<n<<endl;
+    m=pow(c, d);
+    m%=n;
+    cout<<m; //original message
 }
 
 int main () {
-    int m;
+    long int m;
     cin>>m;
     RSA(m);
     return 0;
